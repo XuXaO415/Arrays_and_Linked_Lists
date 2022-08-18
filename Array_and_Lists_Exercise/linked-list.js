@@ -30,6 +30,7 @@ class LinkedList {
       this.tail.next = newNode; // set next node of tail to new node
       this.tail = newNode; // set tail to new node
     }
+    // console.log("Pushing node", val); // print message
     this.length++; // increment length
   }
 
@@ -43,7 +44,8 @@ class LinkedList {
       newNode.next = this.head; // set next node of new node to head
       this.head = newNode; // set head to new node
       this.length++; // increment length
-      console.log(this.length); // print length
+      // console.log(`Unshifting and adding node`, val); // print message
+      console.log("Unshifting node", newNode.val); // print message )
     }
   }
   /** pop(): return & remove last item. */
@@ -69,6 +71,7 @@ class LinkedList {
         this.tail = previousNode; // set tail to previous node
         this.tail.next = null; // set next node of tail to null
         this.length--; // decrement length
+        console.log("Popping node number", currentNode.val); // print pop message
         return currentNode.val; // return current node value
       }
     }
@@ -133,7 +136,7 @@ class LinkedList {
         currentNode = currentNode.next; // set current node to next node
         counter++; // increment counter
       }
-      console.log("Setting node at index of", idx, "to", val); // print message
+      console.log("Setting node at index of", idx, "to", val);
       currentNode.val = val; // set current node value to val
       return currentNode.val; // return current node value
     } else {
@@ -141,31 +144,83 @@ class LinkedList {
     }
   }
 
+  /** get node @ index */
+  getNode(idx) {
+    let currentNode = this.head; // start at head
+    let counter = 0; // set counter to 0
+    while (counter < idx) { // loop through list until we reach index
+      currentNode = currentNode.next; // set current node to next node
+      counter++; // increment counter
+    }
+    console.log(currentNode);
+    return currentNode; // return current node
+  }
+
 
   /** insertAt(idx, val): add node w/val before idx. */
   //Insert a new node at position idx with value val. Throws error if index is invalid. Returns undefined.
   // failed test case of inserting node at adjusting nearby nodes
+  // insertAt(idx, val) {
+  //   if (idx < 0 || idx > this.length) { // if idx is out of bounds
+  //     throw "Error: index is out of bounds"; // throw error
+  //   } else if (idx === 0) { // if idx is 0
+  //     this.unshift(val); // unshift value to list
+  //   } else if (idx === this.length) { // if idx is length
+  //     this.push(val); // push value to list
+  //   } else {
+  //     let currentNode = this.head; // start at head
+  //     let counter = 0; // set counter to 0
+  //     while (counter < idx) { // loop through list until we reach index
+  //       currentNode = currentNode.next; // set current node to next node
+  //       counter++; // increment counter
+  //     }
+  //     let newNode = new Node(val); // create new node with value
+  //     console.log("Inserting node at index of", idx, "to", val); // print message
+  //     newNode.next = currentNode.next; // set next node of new node to next node of current node
+  //     currentNode.next = newNode; // set next node of current node to new node
+  //     this.length++; // increment length
+  //   }
+  // }
+
   insertAt(idx, val) {
     if (idx < 0 || idx > this.length) { // if idx is out of bounds
       throw "Error: index is out of bounds"; // throw error
     } else if (idx === 0) { // if idx is 0
       this.unshift(val); // unshift value to list
-    } else if (idx === this.length) { // if idx is length
-      this.push(val); // push value to list
-    } else {
-      let currentNode = this.head; // start at head
-      let counter = 0; // set counter to 0
-      while (counter < idx) { // loop through list until we reach index
-        currentNode = currentNode.next; // set current node to next node
-        counter++; // increment counter
-      }
-      let newNode = new Node(val); // create new node with value
-      console.log("Inserting node at index of", idx, "to", val); // print message
-      newNode.next = currentNode.next; // set next node of new node to next node of current node
-      currentNode.next = newNode; // set next node of current node to new node
+    } else if (idx < this.length) {
+      const newNode = new Node(val); // create new node with value
+      const previousNode = this.getNode(idx - 1); // get node at index
+      const currentNode = previousNode.next; // get next node of previous node
+      previousNode.next = newNode; // set next node of previous node to new node
+      newNode.next = currentNode; // set next node of new node to next node of current node
+
+      console.log("Inserting node at index of", idx, "to", val);
       this.length++; // increment length
+    } else {
+      this.push(val); // push value to list
     }
   }
+
+
+  // insertAt(idx, val) {
+  //   if (idx < 0 || idx > this.length) {
+  //     throw "Error: index is out of bounds";
+  //   }
+  //   if (idx === 0) return this.unshift(val);
+  //   if (idx === this.length) return this.push(val);
+
+  //   let previousNode = this.getNode(idx - 1);
+
+  //   let newNode = new Node(val);
+  //   newNode.next = previousNode.next;
+  //   previousNode.next = newNode;
+  //   this.length++;
+  // }
+
+
+
+
+
 
   /** removeAt(idx): return & remove item at idx, */
   //Remove & return value at position idx. Throws error if index is invalid.
